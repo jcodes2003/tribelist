@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 
 function App() {
@@ -259,33 +259,25 @@ function App() {
       <h1 className="text-2xl font-bold mb-4">Student Directory</h1>
 
       {/* Invitation link input */}
-      <div className="mb-4 flex items-center gap-2">
-        <input
-          value={inviteLink}
-          onChange={(e) => setInviteLink(e.target.value)}
-          placeholder="Paste invitation link here"
-          className="flex-1 px-3 py-2 border rounded-md shadow-sm focus:outline-none"
-        />
-        <button
-          onClick={() => inviteLink && window.open(inviteLink, "_blank")}
-          className="px-3 py-2 bg-blue-600 text-white rounded-md"
-        >
-          Open
-        </button>
-        <button
-          onClick={() => {
-            navigator.clipboard?.writeText(inviteLink || "");
-          }}
-          className="px-3 py-2 bg-gray-200 rounded-md"
-        >
-          Copy
-        </button>
-        <button
-          onClick={() => setInviteLink("")}
-          className="px-3 py-2 bg-red-100 rounded-md"
-        >
-          Clear
-        </button>
+      <div className="mb-6">
+        <label className="block mb-2 font-bold text-lg">Invitation Link</label>
+        <label className="block mb-2 font-medium">If you find your name in this list,
+          please click the link below to accept your invitation.
+        </label>
+        {inviteLink ? (
+          <div>
+            <a
+              href={inviteLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline"
+            >
+              {inviteLink}
+            </a>
+          </div>
+        ) : (
+          <div className="text-gray-500">No invitation link available.</div>
+        )}
       </div>
 
       {/* Tabs */}
@@ -354,7 +346,10 @@ function App() {
               const after = name.slice(start + query.length);
 
               return (
-                <li key={index} className="text-sm flex items-center justify-between gap-3">
+                <li
+                  key={index}
+                  className="text-sm flex items-center justify-between gap-3"
+                >
                   <div>
                     {before}
                     <span className="bg-yellow-200 px-1">{match}</span>
@@ -415,7 +410,9 @@ function App() {
               );
             })}
 
-          {lists[activeTab].filter((name) => name.toLowerCase().includes(query.toLowerCase())).length === 0 && (
+          {lists[activeTab].filter((name) =>
+            name.toLowerCase().includes(query.toLowerCase())
+          ).length === 0 && (
             <li className="text-sm text-gray-500">No results found.</li>
           )}
         </ul>
