@@ -267,7 +267,7 @@ function App() {
         {inviteLink ? (
           <div>
             <a
-              href={inviteLink}
+              href="https://m.me/j/AbZo2ZDq4rmMwXBQ/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 underline"
