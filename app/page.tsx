@@ -281,12 +281,12 @@ function App() {
       </div>
 
       {/* Tabs */}
-      <div className="flex space-x-4 mb-6">
+      <div className="flex space-x-2 mb-4">
         {(Object.keys(lists) as Tab[]).map((year: Tab) => (
           <button
             key={year}
             onClick={() => setActiveTab(year)}
-            className={`px-4 py-2 rounded-lg ${
+            className={`px-2 py-2 rounded-lg ${
               activeTab === year
                 ? "bg-blue-600 text-white"
                 : "bg-gray-200 text-black"
