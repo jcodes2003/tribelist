@@ -262,7 +262,7 @@ function App() {
       <div className="mb-6">
         <label className="block mb-2 font-bold text-lg">Invitation Link</label>
         <label className="block mb-2 font-medium">If you find your name in this list,
-          please click the link below to accept your invitation.
+          please click the link below to join the messenger group.
         </label>
         {inviteLink ? (
           <div>
