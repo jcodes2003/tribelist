@@ -272,7 +272,7 @@ function App() {
               rel="noopener noreferrer"
               className="text-blue-600 underline"
             >
-              {inviteLink}
+              https://m.me/j/AbZo2ZDq4rmMwXBQ/
             </a>
           </div>
         ) : (
