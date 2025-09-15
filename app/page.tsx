@@ -402,7 +402,7 @@ function App() {
                         }}
                         className="px-2 py-1 bg-gray-100 rounded-md text-sm"
                       >
-                        {links[name] ? "Edit link" : "Add link"}
+                 
                       </button>
                     )}
                   </div>
