@@ -6,6 +6,30 @@ function App() {
 
   const [activeTab, setActiveTab] = useState<Tab>("Freshmen");
   const [query, setQuery] = useState<string>("");
+  const [links, setLinks] = useState<Record<string, string>>({});
+  const [editing, setEditing] = useState<string | null>(null);
+  const [editingValue, setEditingValue] = useState<string>("");
+  const [inviteLink, setInviteLink] = useState<string>("\n");
+
+  // load inviteLink from localStorage on first render
+  React.useEffect(() => {
+    try {
+      const saved = localStorage.getItem("inviteLink");
+      if (saved) setInviteLink(saved);
+    } catch (e) {
+      // ignore
+    }
+  }, []);
+
+  // persist inviteLink
+  React.useEffect(() => {
+    try {
+      if (inviteLink) localStorage.setItem("inviteLink", inviteLink);
+      else localStorage.removeItem("inviteLink");
+    } catch (e) {
+      // ignore
+    }
+  }, [inviteLink]);
 
   const freshmen = [
     "ABALDE, JELLIAN MAHUNYAG",
@@ -234,6 +258,36 @@ function App() {
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Student Directory</h1>
 
+      {/* Invitation link input */}
+      <div className="mb-4 flex items-center gap-2">
+        <input
+          value={inviteLink}
+          onChange={(e) => setInviteLink(e.target.value)}
+          placeholder="Paste invitation link here"
+          className="flex-1 px-3 py-2 border rounded-md shadow-sm focus:outline-none"
+        />
+        <button
+          onClick={() => inviteLink && window.open(inviteLink, "_blank")}
+          className="px-3 py-2 bg-blue-600 text-white rounded-md"
+        >
+          Open
+        </button>
+        <button
+          onClick={() => {
+            navigator.clipboard?.writeText(inviteLink || "");
+          }}
+          className="px-3 py-2 bg-gray-200 rounded-md"
+        >
+          Copy
+        </button>
+        <button
+          onClick={() => setInviteLink("")}
+          className="px-3 py-2 bg-red-100 rounded-md"
+        >
+          Clear
+        </button>
+      </div>
+
       {/* Tabs */}
       <div className="flex space-x-4 mb-6">
         {(Object.keys(lists) as Tab[]).map((year: Tab) => (
@@ -300,10 +354,63 @@ function App() {
               const after = name.slice(start + query.length);
 
               return (
-                <li key={index} className="text-sm">
-                  {before}
-                  <span className="bg-yellow-200 px-1">{match}</span>
-                  {after}
+                <li key={index} className="text-sm flex items-center justify-between gap-3">
+                  <div>
+                    {before}
+                    <span className="bg-yellow-200 px-1">{match}</span>
+                    {after}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {links[name] && (
+                      <button
+                        onClick={() => window.open(links[name], "_blank")}
+                        className="text-blue-600 underline text-sm"
+                      >
+                        Open
+                      </button>
+                    )}
+
+                    {editing === name ? (
+                      <div className="flex items-center gap-2">
+                        <input
+                          value={editingValue}
+                          onChange={(e) => setEditingValue(e.target.value)}
+                          placeholder="https://example.com"
+                          className="px-2 py-1 border rounded-md text-sm"
+                        />
+                        <button
+                          onClick={() => {
+                            setLinks((s) => ({ ...s, [name]: editingValue }));
+                            setEditing(null);
+                            setEditingValue("");
+                          }}
+                          className="px-2 py-1 bg-blue-600 text-white rounded-md text-sm"
+                        >
+                          Save
+                        </button>
+                        <button
+                          onClick={() => {
+                            setEditing(null);
+                            setEditingValue("");
+                          }}
+                          className="px-2 py-1 bg-gray-200 rounded-md text-sm"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setEditing(name);
+                          setEditingValue(links[name] ?? "");
+                        }}
+                        className="px-2 py-1 bg-gray-100 rounded-md text-sm"
+                      >
+                        {links[name] ? "Edit link" : "Add link"}
+                      </button>
+                    )}
+                  </div>
                 </li>
               );
             })}
